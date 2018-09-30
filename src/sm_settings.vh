@@ -11,7 +11,7 @@
 // settings START
 
 // instruction memory size (in words)
-`define SM_CONFIG_ROM_SIZE  256
+`define SM_CONFIG_ROM_SIZE  128
 
 // default exception handler addr
 `define SM_CONFIG_EXCEPTION_HANDLER_ADDR    32'h100
@@ -46,8 +46,9 @@
 `define SM_MEM_AHB_RAM    ( addr [31:29] == 3'b001 )
 // 2.2 GPIO             : 0x40000000 - 0x40000fff
 `define SM_MEM_AHB_GPIO   ( addr [31:12] == 20'h40000 )
-// 2.3 ETH              : 0x50000000 - 0x50000fff
-`define SM_MEM_AHB_ETH    ( addr [31:12] == 20'h50000 )
+// 2.3 TWI              : 0x50000000 - 0x50000fff
+`define SM_MEM_AHB_TWI   ( addr [31:12] == 20'h50000 )
+
 // settings END
 //**************************************************************
 

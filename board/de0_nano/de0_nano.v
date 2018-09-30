@@ -4,7 +4,10 @@ module de0_nano
     input           FPGA_CLK1_50,
     input   [ 1:0]  KEY,
     output  [ 7:0]  LED,
-    input   [ 3:0]  SW
+    input   [ 3:0]  SW,
+    //twi side
+	output			scl,
+	inout			sda
 );
 
     // wires & inputs
@@ -25,7 +28,9 @@ module de0_nano
         .clkEnable  ( clkEnable ),
         .clk        ( clk       ),
         .regAddr    ( regAddr   ),
-        .regData    ( regData   )
+        .regData    ( regData   ),
+        .sda        ( sda       ),
+        .scl        ( scl       ),
     );
 
     //outputs

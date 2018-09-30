@@ -60,15 +60,6 @@ set_location_assignment PIN_B9 -to SW[2]
 set_location_assignment PIN_M15 -to SW[3]
 
 #============================================================
-# TWI
-#============================================================
-
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to sda
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to scl
-set_location_assignment PIN_F1 -to sda
-set_location_assignment PIN_F2 -to scl
-
-#============================================================
 # End of pin assignments by Terasic System Builder
 #============================================================
 

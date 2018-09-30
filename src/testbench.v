@@ -7,7 +7,7 @@
  * Copyright(c) 2017-2018 Stanislav Zhelnio
  */ 
 
-`timescale 10 ps / 10 ps
+`timescale 1 ns / 100 ps
 
 `include "sm_settings.vh"
 `include "sm_cpu.vh"
@@ -19,15 +19,13 @@
 module sm_testbench;
 
     // simulation options
-    parameter Tt     = 2000;
+    parameter Tt     = 20;
 
     reg         clk;
     reg         rst_n;
     reg  [ 4:0] regAddr;
     wire [31:0] regData;
     wire        cpuClk;
-
-    reg         eth_clk;
 
     // peripheral wires
     `ifdef SM_CONFIG_AHB_GPIO
@@ -49,7 +47,7 @@ module sm_testbench;
         .port_gpioIn  ( port_gpioIn  ),
         .port_gpioOut ( port_gpioOut ),
         `endif
-        .eth_clk   ( eth_clk ),
+
         .clkIn     ( clk     ),
         .rst_n     ( rst_n   )
     );
@@ -66,13 +64,6 @@ module sm_testbench;
         initial $dumpvars(0, sm_top.sm_cpu.rf.rf[k]);
     end
 `endif
-
-    // simulation init
-    parameter T_eth     = 1250;
-    initial begin
-        eth_clk = 0;
-        forever eth_clk = #(T_eth/2) ~ eth_clk ;
-    end
 
     // simulation init
     initial begin

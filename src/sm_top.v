@@ -25,10 +25,9 @@ module sm_top
     output [`SM_GPIO_WIDTH - 1:0] port_gpioOut,
     `endif
 
-    output 						  eth_txp,
-    output 						  eth_txn,
-    output 						  eth_tx_led,
-    input                         eth_clk,
+    //twi side
+	output			scl,
+	inout			sda,
 
     input           clkIn,
     input           rst_n
@@ -94,11 +93,9 @@ module sm_top
         .port_gpioIn  ( port_gpioIn  ),
         .port_gpioOut ( port_gpioOut ),
         `endif
-
-        .eth_clk      ( eth_clk      ),
-        .eth_txp 	  ( eth_txp 	 ),
-		.eth_txn 	  ( eth_txn 	 ),
-		.eth_tx_led   ( eth_tx_led 	 ),
+        .sda     ( sda     ),
+        .scl     ( scl     ),
+        .clk_twi ( clkIn   ),
 
         .HCLK    ( HCLK    ),
         .HRESETn ( HRESETn )

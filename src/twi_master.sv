@@ -1,6 +1,8 @@
-/*
- * AHB-Lite twi
- */
+/*	
+*	File:	twi_master.sv
+*	Author:	Vlasov D.V.
+*	Date: 	2018.09.24 
+*/
 
 module twi_master 
 (
@@ -14,12 +16,14 @@ module twi_master
 	output			[7:0]	dataout,
 	input					wr,
 	input					rd,
+	output	logic			tr,
+	input					tr_clr,
 	//twi interface
 	output					scl,
 	inout					sda
 );
 	
-	enum logic [2:0]	{ WAIT, START, START_R, READ, WRITE, DATA, STOP } state, next_state ;	//FSM states
+	enum logic [2:0]	{ WAIT, START, START_R, READ, WRITE, DATA, STOP, WAIT_CLR } state, next_state ;	//FSM states
 	
 	localparam		t_start = 95 ,
 					t_stop	= 95 ,
@@ -59,7 +63,7 @@ module twi_master
 		next_state = state ;
 			case( state )
 				WAIT	: 
-						if( wr || rd )
+						if( ( wr || rd ) && ( tr_clr == '0 ) && ( tr == '0 ) )
 							next_state = START ;
 				START	:
 						if( ( wr == '1 ) && ( counter == t_start ) )
@@ -100,6 +104,9 @@ module twi_master
 						end
 				STOP	:
 						if( counter == t_stop )
+							next_state	= WAIT_CLR ;
+				WAIT_CLR:
+						if( tr_clr == '0 )
 							next_state	= WAIT ;
 				default	:
 						next_state = WAIT ;
@@ -110,6 +117,7 @@ module twi_master
 	begin
 		if( rst )
 		begin
+			tr <= '0 ;
 			case( state )
 				WAIT	:
 						begin
@@ -223,6 +231,12 @@ module twi_master
 							if( counter == t_stop )
 								counter <= '0 ;
 						end
+				WAIT_CLR:
+						begin	
+							$stop();
+							if( tr_clr == '0 )
+								tr <= '1 ;
+						end
 			endcase
 		end
 		else
@@ -231,6 +245,7 @@ module twi_master
 			bit_counter <= '0 ;
 			ans <= '0 ;
 			pos_counter <= '0 ;
+			tr <= '0 ;
 		end
 	end
 

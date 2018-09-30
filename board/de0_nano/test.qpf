@@ -18,13 +18,13 @@
 #
 # Quartus II 64-Bit
 # Version 11.1 Build 259 01/25/2012 Service Pack 2.11 SJ Full Version
-# Date created = 14:10:40  September 28, 2018
+# Date created = 14:12:04  September 28, 2018
 #
 # -------------------------------------------------------------------------- #
 
 QUARTUS_VERSION = "11.1"
-DATE = "14:10:40  September 28, 2018"
+DATE = "14:12:04  September 28, 2018"
 
 # Revisions
 
-PROJECT_REVISION = "de0_nano"
+PROJECT_REVISION = "test"

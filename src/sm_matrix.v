@@ -11,7 +11,7 @@
  */
 
 `include "ahb_lite.vh"
-`include "sm_settings.vh"
+`include "sm_settings.vh"   // maybe bug ?
 
 module sm_matrix
 #(

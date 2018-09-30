@@ -31,12 +31,10 @@ module ahb_matrix
     // GPIO
     input  [`SM_GPIO_WIDTH - 1:0] port_gpioIn,
     output [`SM_GPIO_WIDTH - 1:0] port_gpioOut,
-
-    // ETH
-    input                         eth_clk,
-    output                        eth_txp,
-    output                        eth_txn,
-    output                        eth_tx_led
+    //twi side
+    input                        clk_twi,
+	output			             scl,
+	inout			             sda
 );
     //bus wires
     wire   [`DEVICE_COUNT  - 1:0] HSEL_R;      // effected data phase HSEL signal
@@ -80,8 +78,9 @@ module ahb_matrix
         .port_gpioOut ( port_gpioOut )
     );
 
-    ahb_eth eth
-    (   
+    // GPIO
+    ahb_twi twi
+    (
         .HCLK         ( HCLK         ),
         .HRESETn      ( HRESETn      ),
         .HSEL         ( HSEL     [2] ),
@@ -93,11 +92,9 @@ module ahb_matrix
         .HWDATA       ( HWDATA       ),
         .HREADYOUT    ( HREADYOUT[2] ),
         .HRESP        ( RESP     [2] ),
-        .eth_clk      ( eth_clk      ),
-        .eth_rstn     ( HRESETn      ),
-        .Txp          ( eth_txp      ),
-        .Txn          ( eth_txn      ),
-        .Led_Tx       ( eth_tx_led   )
+        .clk_twi      ( clk_twi      ),
+        .sda          ( sda          ),
+        .scl          ( scl          )
     );
 
     // some new peripheral stub
@@ -138,9 +135,9 @@ module ahb_decoder
 );
     wire [31:0] addr = HADDR;
 
-    assign HSEL[0] = `SM_MEM_AHB_RAM  ;
-    assign HSEL[1] = `SM_MEM_AHB_GPIO ;
-    assign HSEL[2] = `SM_MEM_AHB_ETH  ;
+    assign HSEL[0] = `SM_MEM_AHB_RAM;
+    assign HSEL[1] = `SM_MEM_AHB_GPIO;
+    assign HSEL[2] = `SM_MEM_AHB_TWI;
     assign HSEL[3] = 1'b0; // some new peripheral stub
 
 endmodule
@@ -170,6 +167,6 @@ module ahb_response_mux
             4'b??10  : begin HRDATA = RDATA_1; HRESP = RESP[1]; HREADY = HREADYOUT[1]; end
             4'b?100  : begin HRDATA = RDATA_2; HRESP = RESP[2]; HREADY = HREADYOUT[2]; end
             4'b1000  : begin HRDATA = RDATA_3; HRESP = RESP[3]; HREADY = HREADYOUT[3]; end
-            default  : begin HRDATA = 32'b0;   HRESP = 1'b1;    HREADY = 1'b1; end //error
+            default : begin HRDATA = 32'b0;   HRESP = 1'b1;    HREADY = 1'b1; end //error
         endcase
 endmodule

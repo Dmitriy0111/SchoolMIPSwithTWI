@@ -2,7 +2,9 @@ module rz_easyFPGA_A21(
 	input       CLK100MHZ,
 	input       KEY0,
 	input       KEY1,
-	output      [3:0]  LED
+	output      [3:0]  LED,
+	output		scl,
+	inout		sda
 );
 
     // wires & inputs
@@ -21,11 +23,13 @@ module rz_easyFPGA_A21(
         .clkEnable  ( clkEnable ),
         .clk        ( clk       ),
         .regAddr    ( 4'b0010   ),
-        .regData    ( regData   )
+        .regData    ( regData   ),
+		.sda		( sda		),
+		.scl		( scl		)
     );
 
     //outputs
-    assign LED[0]   = clk;
-    assign LED[3:1] = regData[2:0];
+    //assign LED[0]   = clk;
+    assign LED[3:0] = ~ regData[3:0];
 
 endmodule
